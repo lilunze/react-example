@@ -3,15 +3,18 @@
  * @LastEditors: lilunze
  */
 import "./App.css";
-import '@nutui/nutui-react/dist/style.css'
+import React from "react";
+import "@nutui/nutui-react/dist/style.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout";
-import Home from "./pages/home";
-import About from "./pages/about";
-import Dashboard from "./pages/dashboard";
-import Judge from "./pages/judge";
-// import Statistical from "./pages/statistical";
-import FlowQuery from "./pages/flowquery";
+import Loading from "./components/loading";
+
+// 组件懒加载
+const Home = React.lazy(() => import("./pages/home"));
+const Dashboard = React.lazy(() => import("./pages/dashboard"));
+const Judge = React.lazy(() => import("./pages/judge"));
+const About = React.lazy(() => import("./pages/about"));
+const FlowQuery = React.lazy(() => import("./pages/flowquery"));
 
 function App() {
   return (
@@ -19,12 +22,47 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path='home' element={<Home />}></Route>
-          <Route path='dashboard' element={<Dashboard />}></Route>
+          <Route
+            path="home"
+            element={
+              <React.Suspense fallback={<Loading />}>
+                <Home />
+              </React.Suspense>
+            }
+          ></Route>
+          <Route
+            path="dashboard"
+            element={
+              <React.Suspense fallback={<Loading />}>
+                <Dashboard />
+              </React.Suspense>
+            }
+          ></Route>
         </Route>
-        <Route path="/judge" element={<Judge />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/flowquery" element={<FlowQuery />} />
+        <Route
+          path="/judge"
+          element={
+            <React.Suspense fallback={<Loading />}>
+              <Judge />
+            </React.Suspense>
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            <React.Suspense fallback={<Loading />}>
+              <About />
+            </React.Suspense>
+          }
+        />
+        <Route
+          path="/flowquery"
+          element={
+            <React.Suspense fallback={<Loading />}>
+              <FlowQuery />
+            </React.Suspense>
+          }
+        />
       </Routes>
     </Router>
   );
