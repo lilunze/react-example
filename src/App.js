@@ -8,6 +8,8 @@ import "@nutui/nutui-react/dist/style.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout";
 import Loading from "./components/loading";
+import Auth from "./components/auth";
+import Login from "./pages/login";
 
 // 组件懒加载
 const Home = React.lazy(() => import("./pages/home"));
@@ -33,9 +35,11 @@ function App() {
           <Route
             path="dashboard"
             element={
-              <React.Suspense fallback={<Loading />}>
-                <Dashboard />
-              </React.Suspense>
+              <Auth auth="dashboard">
+                <React.Suspense fallback={<Loading />}>
+                  <Dashboard />
+                </React.Suspense>
+              </Auth>
             }
           ></Route>
         </Route>
@@ -63,6 +67,7 @@ function App() {
             </React.Suspense>
           }
         />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   );
